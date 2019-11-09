@@ -5,6 +5,12 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import com.vidhya.spark.builder.SparkContextBuilder;
 
+/**
+ * Count values from given input string and use parallelize API for converting to list}
+ * 
+ * @author vidhy
+ *
+ */
 public class ParallelizeOperation {
 
   public static void main(String[] args) {
