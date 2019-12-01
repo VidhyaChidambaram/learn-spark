@@ -1,0 +1,249 @@
+So in the previous chapter we learned how to load in a text file in practice from something like a Hadoop
+
+file system or possibly something like Amazon S3.
+
+But we've tested it with just the local file.
+
+I introduced to you in that chapter this input doc TXI the file inside the subtitles folder.
+
+And what we have in here is the subtitles file it happens to come from our docket training courses.
+
+It's from both of the courses and I've combined them all together into a single big file.
+
+And the challenge is we would like to be able to take the subtitles file from any of our courses and
+
+we would like to be able to generate automatically a set of 10 key words for that course and the keywords
+
+of course should reflect the major topics in that course.
+
+So what we're going to do in this chapter is I'm going to guide you through how you would do that using
+
+tools and techniques that we've already learnt if you one you could post the video now and have a try
+
+at implementing this challenge for yourself.
+
+However I don't want you to get stuck and get frustrated and think that you're not doing very well with
+
+SPARC because what we've done so far probably isn't quite enough.
+
+I've given you all of the fundamental tools such as fruit juice spikey how to do maps.
+
+Certainly the flat maps are going to be very useful for this exercise too but there will be a few thing
+
+there will be a few extra tools that you're going to need that we haven't yet covered if you want to
+
+try this for yourself.
+
+You can visit the Apache support page Sparke dot Apache dot org and on there you'll find a link.
+
+See the documentation for the latest release and the documentation is quite good.
+
+It gets a little bit mathematical in places and certainly assumes previous knowledge of working in these
+
+kinds of environments.
+
+But if you go further down you'll find where to go from here and I think the most useful page really
+
+for what we're doing at least is the RDD programming guide.
+
+And what I've got in here is to scroll down to a random example.
+
+So for example parallelize collection's is what we saw very early in the course where we can load in
+
+an existing collection in the driver program.
+
+Very good for testing.
+
+What they give you here is how to do it in Scala.
+
+But also while Python as well but here's how to do it in Java.
+
+Not exactly the kind of thing we've been doing early on in the course and you'll find there's a lot
+
+of good examples of how to do things in Java.
+
+Now they're covering that pretty much what we've covered so far on this course.
+
+Forgot about the top though I think the important thing I want to point towards is the section here
+
+and here and this is where they list all of the transformations and all of the actions that are available
+
+just to recall what we covered in a very early chapter transformations are where we are transforming
+
+and RDD from one form to another.
+
+Or rather we're telling Spock that we want the RDD to be transformed Spock will leisurely evaluate that
+
+transformation once we get to an action this it's worth bearing that in mind.
+
+But if I follow the link here here's a list of all of the transformations available.
+
+We've covered map we've covered filled so we've colored it flat map.
+
+Now we haven't covered everything.
+
+For example if I go a little further down we haven't covered salting.
+
+So now I reckon for processing subtitles and finding out what the most important words are we're probably
+
+going to need a sort of some description.
+
+So we will need to go in a little further down.
+
+There was some actions that we haven't used so far such as take.
+
+Now that's going to take an hour the day and it will return an array will be a regular Java collection
+
+in fights not an array.
+
+It will be a Java list I think and it will return the first and elements of the RDD.
+
+Now that's kind of very useful because we're going to get very big party days now and we don't really
+
+want to be printing everything to the console.
+
+So take is a very good way of just having a peek at some of the values in that of the day.
+
+Another useful operation is if I can find it on its sites directly underneath it's take a sample.
+
+Now it might not be very interesting to take the first 10 or 20 elements of NRD because that might be
+
+a clump of data in one particular form.
+
+But actually this interesting values scattered all the way through the RDD.
+
+So take samples useful one if we call take sample specifying say 10 elements then it will return 10
+
+random elements from that are the day the point of me showing you this is of course you should get used
+
+to using the Apache spot documentation.
+
+And if you do want to try this exercise for yourself then you will need documentation to fill in a few
+
+gaps but whether you do this by yourself or follow my walkthrough I need to give you a bit of advice
+
+on what we're actually doing.
+
+So you know that we have an input text file which is a set of subtitles.
+
+Lots of words basically.
+
+Now I suggest that the exercise here really is to do a word count.
+
+So somehow split this file up into words and count each unique word that appears in this file.
+
+I can see already for example that there's the word to here and it appears at least twice on this screenful
+
+of text.
+
+So we're going to camp out word in the results and it will have accounts of what it's going to be a
+
+massive number actually put.
+
+But just looking at this screenful I've probably missed some but it's going to be counted as appearing
+
+at least two times.
+
+That will give us a word count doing work counts is actually a very common activity and spark is often
+
+used as a hello world example actually but that I find that's a bit insulting to word counts because
+
+word counts are so important if you're doing any kind of lexical analysis then a word count really is
+
+one of your most important tools.
+
+But I suggest that's not very useful for this because just counting words in this file what we're going
+
+to end up with boring words that top are going to end up with words like the and and and two and probably
+
+words like courses as well not very interesting because that one's going to appear in every single course;
+
+So it's not going to be a specific keyword for that course.
+
+So for that reason we have off camera built a file called boring words dot TXI and what's inside here
+
+is actually two things.
+
+First of all we've included in Heia just a list of the most common words in the English language.
+
+So you'll definitely find words like the and and and of and two and X and so on.
+
+But also what we've done is we've used Sparke to run through all of our subtitles for all of our courses
+
+all at once.
+
+We've generated a list of words that are commonly in every single course.
+
+So as an example I mentioned it before the word course would appear frequently in our courses and therefore
+
+it's not interesting.
+
+And because I always use words like terribly and I'm always complaining so I'm sure the word tedious
+
+will be appearing in here somewhere.
+
+Yeah there it is so we've automatically generated this file.
+
+We think these are words that you should be filtering out of your results in you having to load this
+
+file into memory.
+
+You don't need to do that because I've already done it for you.
+
+I provided a class called util dot Java.
+
+It's just a wrapper around that boring words fall so that you don't have to bother loading it into memory.
+
+There's just two methods in there at the moment but we could add more.
+
+One is called is boring and if you specify a word it will give you a true or false telling you whether
+
+we think that word is boring or not.
+
+And I've also provided just for more readable code I provided the inverse operation of that is not boring.
+
+Now you might be wondering why have I not loaded in this boring words T S T as a r d d.
+
+I absolutely could have done but the first reason is I think it would complicate the exercise and I
+
+want to make this exercise achievable.
+
+But the real reason is in real life if you think about it this boring words there aren't that many words
+
+in the English language.
+
+It's very difficult to know how many words there are in the English language but it's certainly of the
+
+old order of no more than a million or two.
+
+So I don't think this file is ever going to be that big.
+
+If I can just get the properties for the board and was Follet present it's about 89 K and this is actually
+
+a genuine it's not cut down.
+
+It's one that we do use and works well for his presence.
+
+So my get bigger this file but it's no small.
+
+There's really no point in distributing it across an Ardeidae.
+
+So as mentioned in the comments here.
+
+This file will be loaded into the drivers JVM.
+
+And you know unless we feel the need to do otherwise it's fine just to leave it as a local text file.
+
+However the input file isn't.
+
+This is going to be a big massive file.
+
+So I think I've said enough.
+
+Now your challenge if you want to do this yourself is to have a go.
+
+Loading this file is when RDD get read of all the boring words counseller the words that are remaining
+
+and then find the 10 most frequently used it's entirely up to you if you have a go at this for yourself
+
+if you do and you get stuck Don't get frustrated you'll find a full walkthrough after this fade to black.
